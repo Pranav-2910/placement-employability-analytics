@@ -165,7 +165,7 @@ with tab_individual:
     # Max possible: (0.4 * 10) + (0.3 * 20) + (0.2 * 100) + (0.1 * 10) = 4 + 6 + 20 + 1 = 31 (experience score max is 2*5 + 10 + 10 = 30 theoretically)
     # Let's show the raw score out of its direct theoretical maximum based on user inputs
     raw_emp_score = (0.4 * avg_skill) + (0.3 * exp_score) + (0.2 * input_aptitude) + (0.1 * input_soft)
-    max_theoretical_score = (0.4 * 10.0) + (0.3 * 20.0) + (0.2 * 100.0) + (0.1 * 10.0) # 31.0
+    max_theoretical_score = (0.4 * 10.0) + (0.3 * 30.0) + (0.2 * 100.0) + (0.1 * 10.0) # 34.0
     emp_percentage = (raw_emp_score / max_theoretical_score) * 100
     
     # Creating three columns for key metrics
