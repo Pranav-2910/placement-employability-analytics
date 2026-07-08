@@ -29,26 +29,65 @@ The dataset consists of **45,000 student records** containing academic, cognitiv
 | `Backlogs` | Numerical | Number of active or historical backlogs |
 
 ### 🛠️ Engineered Columns:
-1. **`Avg_Skill_Score`**: Calculated as:
-   $$\text{Avg\_Skill\_Score} = \frac{\text{Coding\_Skills} + \text{Communication\_Skills} + \text{Soft\_Skills\_Rating}}{3}$$
-2. **`Experience_Score`**: Calculated as:
-   $$\text{Experience\_Score} = (\text{Internships} \times 2) + \text{Projects} + \text{Certifications}$$
+1. **`Avg_Skill_Score`**: Calculated as the average of the student's primary skill ratings:
+   $$\text{Avg Skill Score} = \frac{\text{Coding Skills} + \text{Communication Skills} + \text{Soft Skills Rating}}{3}$$
+2. **`Experience_Score`**: Calculated as a combination of internships, projects, and certifications:
+   $$\text{Experience Score} = (\text{Internships} \times 2) + \text{Projects} + \text{Certifications}$$
 3. **`Employability_Score`** (SQL query 6 formulation):
-   $$\text{Employability\_Score} = (0.4 \times \text{Avg\_Skill\_Score}) + (0.3 \times \text{Experience\_Score}) + (0.2 \times \text{Aptitude\_Test\_Score}) + (0.1 \times \text{Soft\_Skills\_Rating})$$
+   $$\text{Employability Score} = (0.4 \times \text{Avg Skill Score}) + (0.3 \times \text{Experience Score}) + (0.2 \times \text{Aptitude Test Score}) + (0.1 \times \text{Soft Skills Rating})$$
 
 ---
 
-<!-- Highlighting model evaluation and training metrics -->
+<!-- Documenting the step-by-step workflow and methodology -->
+## 🔄 Project Workflow & Methodology
+
+The project was executed through the following structured phases:
+
+### 1. Data Cleaning & Preprocessing
+*   **Missing Value Check**: Loaded the raw dataset `train.csv` and verified that there were zero missing values across all 45,000 student records.
+*   **Target Encoding**: Converted the categorical `Placement_Status` column into a binary label column named `Placed` (`Placed` = 1, `Not Placed` = 0) to prepare it for machine learning classification.
+*   **Feature Engineering**: Created custom columns `Avg_Skill_Score` and `Experience_Score` using pandas to construct robust indicators of academic and practical competency.
+*   **Exporting Data**: Exported the processed data as `cleaned_placement_data.csv` inside the `Python Analysis` folder for database ingestion and visualization.
+
+### 2. Exploratory Data Analysis (EDA)
+*   **Feature Distribution**: Inspected value counts and distribution shapes for demographics (gender splits were roughly 50-50), degrees, and engineering branches.
+*   **Correlation Analysis**: Computed correlation coefficients of numerical attributes with placement status.
+    *   **Key Positive Drivers**: `Projects` ($r \approx 0.50$), `CGPA` ($r \approx 0.49$), `Certifications` ($r \approx 0.47$), and `Coding_Skills` ($r \approx 0.44$).
+    *   **Key Negative Driver**: `Backlogs` ($r \approx -0.49$), proving that active backlogs are the primary filter used by campus recruiters.
+
+### 3. SQL Analytics
+*   **Database Ingestion**: Created a relational database named `placement_analysis_db` and imported the student records.
+*   **Descriptive Statistics**: Wrote and executed SQL queries to calculate overall placement rates, success rates grouped by engineering branch and degree types, and average CGPA metrics of placed vs. unplaced students.
+*   **Employability Scoring**: Formulated queries to calculate a multi-dimensional `employability_score` for each student based on weighted parameters, and ranked students using SQL window functions (`RANK() OVER`).
+
+### 4. Power BI Dashboarding
+*   **Data Connection**: Ingested the cleaned dataset into Power BI.
+*   **Interactive Visuals**: Created key metric cards, demographic breakdowns, department-wise placement success trends, and skill distribution charts. This interactive dashboard enables academic decision-makers to track student progress and placement readiness.
+
+### 5. Machine Learning Modeling
+*   **Algorithm Evaluation**: Trained and evaluated several candidate classification models (Decision Trees, Random Forest, XGBoost, and LightGBM) to find the most accurate classifier.
+*   **Model Selection & Calibration**: Deployed a **Random Forest Classifier** as the production model. We configured it with `min_samples_leaf=50` to regularize and calibrate predictions. This ensures the web application outputs a smooth, continuous placement probability (%) instead of abrupt binary jumps.
+*   **Serialization**: Saved the preprocessing and model steps into a scikit-learn `Pipeline` and serialized it to `ML Model/placement_model.pkl` for Streamlit deployment.
+
+### 6. Streamlit Web Application
+*   **Interface Design**: Built a modern dark-themed web app featuring dual modes: a **Student Predictor & Profiler** and a **Recruiter Batch Prediction Portal**.
+*   **Interactive Analytics**: Connected user input sliders to the ML pipeline to yield real-time predictions, placement probability gauge charts, and skill comparison radar charts.
+*   **Dynamic Advices**: Designed an automated career advice system that provides actionable, tailored steps to students (e.g. suggesting backlog clearance, certification completion, or coding practices) depending on their input values.
+
+---
+
+<!-- Describing the machine learning model selection and calibration -->
 ## 🤖 Machine Learning Model Performance
 
-We trained classification algorithms to predict placement status (`Placement_Status` -> `Placed` = 1, `Not Placed` = 0) and evaluate their performance on an independent 20% test split:
+During our **research and model selection phase**, we evaluated multiple classification models on a 20% test split to find the best predictor:
 
-- **Calibrated Random Forest Classifier** (with `min_samples_leaf=50`): **99.83% Accuracy** (ROC AUC: 1.0)
-- **Standard Random Forest Classifier**: **100% Accuracy** (ROC AUC: 1.0)
-- **LightGBM Classifier**: **100% Accuracy** (ROC AUC: 1.0)
-- **XGBoost Classifier**: **99.97% Accuracy** (ROC AUC: 1.0)
+*   **Standard Random Forest Classifier**: 100.0% Validation Accuracy (ROC AUC: 1.0)
+*   **LightGBM Classifier**: 100.0% Validation Accuracy (ROC AUC: 1.0)
+*   **XGBoost Classifier**: 99.97% Validation Accuracy (ROC AUC: 1.0)
+*   **Calibrated Random Forest Classifier** (Deployed): **99.83% Validation Accuracy** (ROC AUC: 1.0)
 
-We deployed the **Calibrated Random Forest Classifier Pipeline** which bundles categorical one-hot encoding (`Gender`, `Degree`, `Branch`). This model is optimized to provide smooth, continuous placement probabilities (e.g. 74.5%) instead of binary jumps, making it highly responsive to small changes in input parameters while retaining near-perfect accuracy.
+> [!NOTE]
+> Since the dataset is noiseless and synthetic, standard tree-based classifiers learn the decision boundaries perfectly, leading to binary probability outputs (exactly 0.0% or 100.0%). We chose to deploy the **Calibrated Random Forest Classifier** (`min_samples_leaf=50`). This regularization smooths the model's leaf node distributions, allowing the Streamlit application to output continuous probability estimates (e.g., 72.5%) that react naturally as users adjust the sliders, while maintaining near-perfect accuracy.
 
 ---
 
