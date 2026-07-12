@@ -1,0 +1,9 @@
+# Excluding python compiled bytecode
+__pycache__/
+*.pyc
+
+# Excluding Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Excluding local Streamlit configuration and credentials
+.streamlit/

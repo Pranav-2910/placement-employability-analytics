@@ -17,63 +17,169 @@ st.set_page_config(
 # Applying custom CSS styles to create a premium dark-themed, glassmorphic layout
 st.markdown("""
 <style>
+    /* Importing premium typography from Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+    
     /* Styling the main container and backgrounds */
     .stApp {
-        background: linear-gradient(135deg, #0e1117 0%, #161b22 100%);
-        color: #c9d1d9;
-        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #07090e 0%, #0f1423 50%, #080c16 100%);
+        color: #e6edf3;
+        font-family: 'Plus Jakarta Sans', sans-serif;
     }
     
-    /* Styling the cards and panels */
-    .metric-card {
-        background: rgba(22, 27, 34, 0.7);
-        border: 1px solid rgba(56, 139, 253, 0.4);
-        border-radius: 12px;
-        padding: 20px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        transition: all 0.3s ease;
+    /* Styling headers and custom font styles */
+    h1, h2, h3 {
+        font-family: 'Space Grotesk', sans-serif !important;
+        font-weight: 700 !important;
     }
+    
+    /* Customizing sidebar layout and styling */
+    section[data-testid="stSidebar"] {
+        background-color: #0b0f19 !important;
+        border-right: 1px solid rgba(48, 54, 61, 0.6) !important;
+    }
+    
+    /* Styling the widgets and sliders */
+    .stSlider [data-testid="stMetricValue"] {
+        font-family: 'Space Grotesk', sans-serif;
+    }
+    
+    /* Designing glassmorphic metric cards */
+    .metric-card {
+        background: rgba(15, 20, 35, 0.45);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(88, 166, 255, 0.2);
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    
+    /* Implementing lift and glow animations on card hover */
     .metric-card:hover {
         transform: translateY(-5px);
-        border-color: #58a6ff;
-        box-shadow: 0 6px 25px rgba(56, 139, 253, 0.3);
+        border-color: rgba(88, 166, 255, 0.6);
+        box-shadow: 0 12px 40px rgba(56, 139, 253, 0.2);
     }
     
-    /* Styling headers and custom colors */
+    /* Styling headers and custom color gradients */
     .gradient-text {
-        background: linear-gradient(90deg, #58a6ff, #bc8cff);
+        background: linear-gradient(90deg, #58a6ff 0%, #bc8cff 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         font-weight: 800;
+        font-family: 'Space Grotesk', sans-serif;
     }
     
-    /* Designing status badges */
+    /* Designing placement status badges */
     .badge-placed {
-        background-color: rgba(46, 160, 67, 0.15);
-        color: #3fb950;
-        border: 1px solid rgba(46, 160, 67, 0.4);
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-weight: bold;
+        background: linear-gradient(135deg, rgba(46, 160, 67, 0.1) 0%, rgba(46, 160, 67, 0.25) 100%);
+        color: #56ee73;
+        border: 1px solid rgba(86, 238, 115, 0.4);
+        text-shadow: 0 0 10px rgba(86, 238, 115, 0.25);
+        padding: 6px 14px;
+        border-radius: 30px;
+        font-weight: 700;
         display: inline-block;
+        font-size: 20px;
+        letter-spacing: 0.5px;
     }
+    
     .badge-unplaced {
-        background-color: rgba(248, 81, 73, 0.15);
+        background: linear-gradient(135deg, rgba(248, 81, 73, 0.1) 0%, rgba(248, 81, 73, 0.25) 100%);
         color: #ff7b72;
         border: 1px solid rgba(248, 81, 73, 0.4);
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-weight: bold;
+        text-shadow: 0 0 10px rgba(248, 81, 73, 0.25);
+        padding: 6px 14px;
+        border-radius: 30px;
+        font-weight: 700;
         display: inline-block;
+        font-size: 20px;
+        letter-spacing: 0.5px;
     }
     
-    /* Formatting recommendations section */
-    .reco-box {
-        background: rgba(33, 38, 45, 0.8);
-        border-left: 4px solid #bc8cff;
-        border-radius: 4px;
-        padding: 15px;
-        margin-bottom: 12px;
+    /* Designing personalized recommendation boxes with icons */
+    .reco-box-warning {
+        background: rgba(248, 81, 73, 0.03);
+        border: 1px solid rgba(248, 81, 73, 0.2);
+        border-left: 5px solid #ff7b72;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+    
+    .reco-box-info {
+        background: rgba(56, 139, 253, 0.03);
+        border: 1px solid rgba(56, 139, 253, 0.2);
+        border-left: 5px solid #58a6ff;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+    
+    .reco-box-success {
+        background: rgba(46, 160, 67, 0.03);
+        border: 1px solid rgba(46, 160, 67, 0.2);
+        border-left: 5px solid #3fb950;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Styling Streamlit UI elements like tabs and buttons */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background-color: rgba(15, 20, 35, 0.3);
+        padding: 6px;
+        border-radius: 10px;
+        border: 1px solid rgba(48, 54, 61, 0.4);
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        height: 40px;
+        white-space: pre;
+        background-color: transparent;
+        border-radius: 6px;
+        color: #8b949e;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 500;
+        padding: 0px 16px;
+        transition: all 0.2s ease;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background-color: rgba(56, 139, 253, 0.15) !important;
+        color: #58a6ff !important;
+        font-weight: 600 !important;
+    }
+    
+    /* Customizing file uploader and buttons */
+    .stButton>button {
+        background: linear-gradient(135deg, #1f6feb 0%, #0948b3 100%) !important;
+        border: none !important;
+        color: white !important;
+        font-family: 'Space Grotesk', sans-serif !important;
+        font-weight: 600 !important;
+        border-radius: 8px !important;
+        padding: 8px 20px !important;
+        transition: all 0.3s ease !important;
+    }
+    .stButton>button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(31, 111, 235, 0.4);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -98,40 +204,39 @@ df_data = load_and_prepare_data()
 placement_model = load_trained_model()
 
 # Rendering the sidebar input elements for entering the student profile
-st.sidebar.markdown("<h2 class='gradient-text'>Student Input Profile</h2>", unsafe_allow_html=True)
-st.sidebar.write("Configure the parameters below to evaluate placement probability.")
+st.sidebar.markdown("<h2 class='gradient-text' style='font-size: 26px; margin-bottom: 5px;'>Profile Configurator</h2>", unsafe_allow_html=True)
+st.sidebar.write("Adjust the parameters to simulate placement evaluations.")
 
-# Designing sidebar sections
-st.sidebar.markdown("### 📝 Personal Details")
-input_age = st.sidebar.slider("Age", min_value=18, max_value=24, value=21, step=1)
-input_gender = st.sidebar.selectbox("Gender", options=["Female", "Male"])
+# Designing sidebar sections with expanders to declutter inputs and improve user experience
+with st.sidebar.expander("👤 Personal Details", expanded=True):
+    input_age = st.slider("Age", min_value=18, max_value=24, value=21, step=1, help="The current age of the candidate.")
+    input_gender = st.selectbox("Gender", options=["Female", "Male"], help="Biological gender classification.")
 
-st.sidebar.markdown("### 🎓 Academic Profile")
-input_degree = st.sidebar.selectbox("Degree Type", options=sorted(df_data["Degree"].unique()))
-input_branch = st.sidebar.selectbox("Branch / Specialization", options=sorted(df_data["Branch"].unique()))
-input_cgpa = st.sidebar.slider("Cumulative GPA (CGPA)", min_value=1.0, max_value=10.0, value=7.2, step=0.1)
-input_backlogs = st.sidebar.slider("Active/History Backlogs", min_value=0, max_value=5, value=0, step=1)
+with st.sidebar.expander("🎓 Academic Profile", expanded=True):
+    input_degree = st.selectbox("Degree Type", options=sorted(df_data["Degree"].unique()), help="Enrolled degree program.")
+    input_branch = st.selectbox("Branch / Specialization", options=sorted(df_data["Branch"].unique()), help="Academic stream branch.")
+    input_cgpa = st.slider("Cumulative GPA (CGPA)", min_value=1.0, max_value=10.0, value=7.2, step=0.1, help="Current cumulative academic GPA.")
+    input_backlogs = st.slider("Active/History Backlogs", min_value=0, max_value=5, value=0, step=1, help="Count of accumulated uncleared courses.")
 
-st.sidebar.markdown("### 🛠️ Practical Experience")
-input_internships = st.sidebar.slider("Number of Internships", min_value=0, max_value=5, value=1, step=1)
-input_projects = st.sidebar.slider("Number of Projects Done", min_value=0, max_value=10, value=3, step=1)
-input_certifications = st.sidebar.slider("Certifications Completed", min_value=0, max_value=10, value=2, step=1)
+with st.sidebar.expander("🛠️ Practical Experience", expanded=True):
+    input_internships = st.slider("Number of Internships", min_value=0, max_value=5, value=1, step=1, help="Total internships completed.")
+    input_projects = st.slider("Number of Projects Done", min_value=0, max_value=10, value=3, step=1, help="Hands-on domain projects completed.")
+    input_certifications = st.slider("Certifications Completed", min_value=0, max_value=10, value=2, step=1, help="Industry-recognized certifications earned.")
 
-st.sidebar.markdown("### 🧠 Cognitive & Technical Skills")
-input_coding = st.sidebar.slider("Coding Skills Rating", min_value=1, max_value=10, value=6, step=1)
-input_comm = st.sidebar.slider("Communication Skills Rating", min_value=1, max_value=10, value=6, step=1)
-input_aptitude = st.sidebar.slider("Aptitude Test Score", min_value=0, max_value=100, value=70, step=5)
-input_soft = st.sidebar.slider("Soft Skills Rating", min_value=1, max_value=10, value=6, step=1)
+with st.sidebar.expander("🧠 Skills & Ratings", expanded=True):
+    input_coding = st.slider("Coding Skills Rating", min_value=1, max_value=10, value=6, step=1, help="Technical programming competency.")
+    input_comm = st.slider("Communication Skills Rating", min_value=1, max_value=10, value=6, step=1, help="Verbal and written communication rating.")
+    input_aptitude = st.slider("Aptitude Test Score", min_value=0, max_value=100, value=70, step=5, help="Quantitative reasoning score.")
+    input_soft = st.slider("Soft Skills Rating", min_value=1, max_value=10, value=6, step=1, help="Interpersonal and teamwork competency rating.")
 
 # Displaying main dashboard tabs
 tab_individual, tab_batch = st.tabs(["🎯 Placement Predictor & Profiler", "📊 Recruiters Portal & Batch Prediction"])
 
 with tab_individual:
     # Creating header for the individual prediction tab
-    st.markdown("<h1 class='gradient-text'>Student Placement & Employability Intelligence</h1>", unsafe_allow_html=True)
-    st.write("An advanced predictive analytics platform leveraging machine learning to model student placement outcomes.")
-    
-    st.markdown("---")
+    st.markdown("<h1 class='gradient-text' style='margin-bottom: 2px;'>Student Placement Intelligence</h1>", unsafe_allow_html=True)
+    st.write("An advanced predictive analytics platform leveraging machine learning to model student employability outcomes.")
+    st.markdown("<hr style='border-top: 1px solid rgba(48, 54, 61, 0.4); margin: 15px 0;'>", unsafe_allow_html=True)
     
     # Calculating engineered features identical to the training dataset preprocessing
     avg_skill = (input_coding + input_comm + input_soft) / 3.0
@@ -161,9 +266,6 @@ with tab_individual:
     prediction_class = placement_model.predict(input_df)[0]
     
     # Calculating the employability score using the SQL weightings formula
-    # Formula: 0.4 * Avg_Skill_Score + 0.3 * Experience_Score + 0.2 * Aptitude_Test_Score + 0.1 * Soft_Skills_Rating
-    # Max possible: (0.4 * 10) + (0.3 * 20) + (0.2 * 100) + (0.1 * 10) = 4 + 6 + 20 + 1 = 31 (experience score max is 2*5 + 10 + 10 = 30 theoretically)
-    # Let's show the raw score out of its direct theoretical maximum based on user inputs
     raw_emp_score = (0.4 * avg_skill) + (0.3 * exp_score) + (0.2 * input_aptitude) + (0.1 * input_soft)
     max_theoretical_score = (0.4 * 10.0) + (0.3 * 30.0) + (0.2 * 100.0) + (0.1 * 10.0) # 34.0
     emp_percentage = (raw_emp_score / max_theoretical_score) * 100
@@ -173,32 +275,47 @@ with tab_individual:
     
     # Preparing variables for the outcome card
     status_badge = "<span class='badge-placed'>PLACED</span>" if prediction_class == 1 else "<span class='badge-unplaced'>NOT PLACED</span>"
-    status_desc = "Model predicts high likelihood of campus placement." if prediction_class == 1 else "Model predicts placement difficulty under current profile."
+    status_desc = "Model predicts a high likelihood of campus placement success." if prediction_class == 1 else "Model predicts placement challenges under the current profile."
     
-    # Rendering the Placement Outcome metric card
+    # Rendering the Placement Outcome metric card with SVG icons
     col_metrics1.markdown(f"""
     <div class='metric-card'>
-        <h4 style='margin: 0; color: #8b949e; font-size: 16px;'>Placement Outcome</h4>
+        <div style='display: flex; align-items: center; gap: 12px; margin-bottom: 12px;'>
+            <div style='background: rgba(46, 160, 67, 0.15); padding: 8px; border-radius: 8px; display: flex;'>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3fb950" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+            </div>
+            <h4 style='margin: 0; color: #8b949e; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;'>Placement Outcome</h4>
+        </div>
         <h2 style='margin: 10px 0;'>{status_badge}</h2>
-        <p style='margin: 0; font-size: 14px; color: #c9d1d9;'>{status_desc}</p>
+        <p style='margin: 0; font-size: 13px; color: #8b949e; line-height: 1.4;'>{status_desc}</p>
     </div>
     """, unsafe_allow_html=True)
     
-    # Rendering the Placement Probability metric card
+    # Rendering the Placement Probability metric card with SVG icons
     col_metrics2.markdown(f"""
     <div class='metric-card'>
-        <h4 style='margin: 0; color: #8b949e; font-size: 16px;'>Placement Probability</h4>
-        <h2 style='margin: 10px 0; color: #58a6ff; font-size: 32px; font-weight: bold;'>{prediction_prob * 100:.1f}%</h2>
-        <p style='margin: 0; font-size: 14px; color: #c9d1d9;'>Confidence score generated by Random Forest classifier.</p>
+        <div style='display: flex; align-items: center; gap: 12px; margin-bottom: 12px;'>
+            <div style='background: rgba(56, 139, 253, 0.15); padding: 8px; border-radius: 8px; display: flex;'>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <h4 style='margin: 0; color: #8b949e; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;'>Placement Probability</h4>
+        </div>
+        <h2 style='margin: 10px 0; color: #58a6ff; font-size: 32px; font-weight: 800; font-family: "Space Grotesk", sans-serif;'>{prediction_prob * 100:.1f}%</h2>
+        <p style='margin: 0; font-size: 13px; color: #8b949e; line-height: 1.4;'>Calibrated classifier estimation likelihood.</p>
     </div>
     """, unsafe_allow_html=True)
     
-    # Rendering the Employability Score metric card
+    # Rendering the Employability Score metric card with SVG icons
     col_metrics3.markdown(f"""
     <div class='metric-card'>
-        <h4 style='margin: 0; color: #8b949e; font-size: 16px;'>Employability Score</h4>
-        <h2 style='margin: 10px 0; color: #bc8cff; font-size: 32px; font-weight: bold;'>{raw_emp_score:.2f} <span style='font-size: 14px; color: #8b949e; font-weight: normal;'>/ {max_theoretical_score} ({emp_percentage:.1f}%)</span></h2>
-        <p style='margin: 0; font-size: 14px; color: #c9d1d9;'>Multi-dimensional score calculated from weighted skills and experience.</p>
+        <div style='display: flex; align-items: center; gap: 12px; margin-bottom: 12px;'>
+            <div style='background: rgba(188, 140, 255, 0.15); padding: 8px; border-radius: 8px; display: flex;'>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#bc8cff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+            </div>
+            <h4 style='margin: 0; color: #8b949e; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;'>Employability Index</h4>
+        </div>
+        <h2 style='margin: 10px 0; color: #bc8cff; font-size: 32px; font-weight: 800; font-family: "Space Grotesk", sans-serif;'>{raw_emp_score:.2f} <span style='font-size: 14px; color: #8b949e; font-weight: 400;'>/ {max_theoretical_score} ({emp_percentage:.1f}%)</span></h2>
+        <p style='margin: 0; font-size: 13px; color: #8b949e; line-height: 1.4;'>Multi-dimensional index mapped from weighted stats.</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -222,81 +339,116 @@ with tab_individual:
 
     # Rendering dynamic, personalized recommendations directly below the outputs
     st.markdown("### 💡 Personalized Career Correction & Action Plan")
-    st.write("Dynamic suggestions computed based on your inputs compared to successfully placed student benchmarks:")
+    st.write("Dynamic actions computed based on your profile inputs compared to branch placement benchmarks:")
     
     # Evaluating academic recommendations
     if input_backlogs > 0:
         st.markdown(f"""
-        <div class='reco-box' style='border-color: #ff7b72;'>
-            <strong>⚠️ Clear Active Backlogs:</strong> You currently have {input_backlogs} active backlog(s). 
-            Most core and MNC recruiters filter out profiles with active backlogs during registration. 
-            Prioritize clearing your backlogs to expand placement eligibility.
+        <div class='reco-box-warning'>
+            <div style='background: rgba(248, 81, 73, 0.15); padding: 6px; border-radius: 6px; display: flex;'>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff7b72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div>
+                <strong style='color: #ff7b72; font-size: 15px; display: block; margin-bottom: 4px;'>Clear Active Backlogs</strong>
+                <span style='font-size: 13px; color: #c9d1d9;'>You currently have {input_backlogs} active backlog(s). Most core and MNC recruiters filter out profiles with active backlogs during registration. Prioritize clearing your backlogs to expand placement eligibility.</span>
+            </div>
         </div>
         """, unsafe_allow_html=True)
         
     if input_cgpa < avg_placed_cgpa:
         st.markdown(f"""
-        <div class='reco-box'>
-            <strong>📈 Improve Academic Performance:</strong> Your CGPA of {input_cgpa:.2f} is below the average CGPA 
-            of successfully placed students in {input_branch} ({avg_placed_cgpa:.2f}). Focus on scoring well in 
-            the upcoming semesters to cross the typical placement cutoff of 7.5+ or 8.0+.
+        <div class='reco-box-info'>
+            <div style='background: rgba(56, 139, 253, 0.15); padding: 6px; border-radius: 6px; display: flex;'>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </div>
+            <div>
+                <strong style='color: #58a6ff; font-size: 15px; display: block; margin-bottom: 4px;'>Improve Academic Performance</strong>
+                <span style='font-size: 13px; color: #c9d1d9;'>Your CGPA of {input_cgpa:.2f} is below the average CGPA of successfully placed students in {input_branch} ({avg_placed_cgpa:.2f}). Focus on scoring well in the upcoming semesters to cross the typical placement cutoff of 7.5+ or 8.0+.</span>
+            </div>
         </div>
         """, unsafe_allow_html=True)
     else:
         st.markdown(f"""
-        <div class='reco-box' style='border-left-color: #3fb950;'>
-            <strong>🌟 Strong Academics:</strong> Congratulations! Your CGPA of {input_cgpa:.2f} is above the average 
-            of placed students ({avg_placed_cgpa:.2f}), making you eligible for high-tier company processes.
+        <div class='reco-box-success'>
+            <div style='background: rgba(46, 160, 67, 0.15); padding: 6px; border-radius: 6px; display: flex;'>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3fb950" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div>
+                <strong style='color: #3fb950; font-size: 15px; display: block; margin-bottom: 4px;'>Strong Academic Standing</strong>
+                <span style='font-size: 13px; color: #c9d1d9;'>Congratulations! Your CGPA of {input_cgpa:.2f} is above the average of placed students ({avg_placed_cgpa:.2f}), making you eligible for high-tier company processes.</span>
+            </div>
         </div>
         """, unsafe_allow_html=True)
         
     # Evaluating coding and technical skills recommendations
     if input_coding < avg_placed_coding:
         st.markdown(f"""
-        <div class='reco-box'>
-            <strong>💻 Boost Coding Skills:</strong> Placed students in your branch average a coding rating of {avg_placed_coding:.2f}/10, 
-            while yours is entered as {input_coding}/10. Dedicate time to structured coding platforms (LeetCode, HackerRank, GeeksforGeeks) 
-            to ace technical coding assessments.
+        <div class='reco-box-info'>
+            <div style='background: rgba(56, 139, 253, 0.15); padding: 6px; border-radius: 6px; display: flex;'>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <div>
+                <strong style='color: #58a6ff; font-size: 15px; display: block; margin-bottom: 4px;'>Boost Coding Skills</strong>
+                <span style='font-size: 13px; color: #c9d1d9;'>Placed students in your branch average a coding rating of {avg_placed_coding:.2f}/10, while yours is entered as {input_coding}/10. Dedicate time to structured coding platforms (LeetCode, HackerRank, GeeksforGeeks) to ace technical coding assessments.</span>
+            </div>
         </div>
         """, unsafe_allow_html=True)
         
     if input_aptitude < avg_placed_aptitude:
         st.markdown(f"""
-        <div class='reco-box'>
-            <strong>🧮 Practice Quantitative Aptitude:</strong> Your aptitude test score of {input_aptitude} is below the average 
-            of placed candidates ({avg_placed_aptitude:.1f}). Focus on practicing quantitative problems, logical reasoning, 
-            and data interpretation tests, as these represent the primary screening round for most jobs.
+        <div class='reco-box-info'>
+            <div style='background: rgba(56, 139, 253, 0.15); padding: 6px; border-radius: 6px; display: flex;'>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div>
+                <strong style='color: #58a6ff; font-size: 15px; display: block; margin-bottom: 4px;'>Practice Quantitative Aptitude</strong>
+                <span style='font-size: 13px; color: #c9d1d9;'>Your aptitude test score of {input_aptitude} is below the average of placed candidates ({avg_placed_aptitude:.1f}). Focus on practicing quantitative problems, logical reasoning, and data interpretation tests, as these represent the primary screening round for most jobs.</span>
+            </div>
         </div>
         """, unsafe_allow_html=True)
         
     # Evaluating experience recommendations
     if input_internships == 0:
         st.markdown("""
-        <div class='reco-box'>
-            <strong>💼 Pursue Internships:</strong> You have completed 0 internships. Having at least 1 internship 
-            substantially improves your resume's strength and helps you explain industry-readiness in interviews. 
-            Look out for summer internships or virtual research projects.
+        <div class='reco-box-info'>
+            <div style='background: rgba(56, 139, 253, 0.15); padding: 6px; border-radius: 6px; display: flex;'>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            </div>
+            <div>
+                <strong style='color: #58a6ff; font-size: 15px; display: block; margin-bottom: 4px;'>Pursue Internships</strong>
+                <span style='font-size: 13px; color: #c9d1d9;'>You have completed 0 internships. Having at least 1 internship substantially improves your resume's strength and helps you explain industry-readiness in interviews. Look out for summer internships or virtual research projects.</span>
+            </div>
         </div>
         """, unsafe_allow_html=True)
         
     if input_projects < 2:
         st.markdown("""
-        <div class='reco-box'>
-            <strong>📁 Build Domain Projects:</strong> Undertake 2 to 3 hands-on practical projects in your field. 
-            This allows you to demonstrate active problem-solving skills and provides talking points in technical rounds.
+        <div class='reco-box-info'>
+            <div style='background: rgba(56, 139, 253, 0.15); padding: 6px; border-radius: 6px; display: flex;'>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div>
+                <strong style='color: #58a6ff; font-size: 15px; display: block; margin-bottom: 4px;'>Build Domain Projects</strong>
+                <span style='font-size: 13px; color: #c9d1d9;'>Undertake 2 to 3 hands-on practical projects in your field. This allows you to demonstrate active problem-solving skills and provides talking points in technical rounds.</span>
+            </div>
         </div>
         """, unsafe_allow_html=True)
         
     if input_certifications < 1:
         st.markdown("""
-        <div class='reco-box'>
-            <strong>📜 Earn Professional Certifications:</strong> Industry credentials (from AWS, Oracle, Google, Coursera, etc.) 
-            validate your specialized expertise and show self-motivation. Plan to complete at least one certification soon.
+        <div class='reco-box-info'>
+            <div style='background: rgba(56, 139, 253, 0.15); padding: 6px; border-radius: 6px; display: flex;'>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+                <strong style='color: #58a6ff; font-size: 15px; display: block; margin-bottom: 4px;'>Earn Professional Certifications</strong>
+                <span style='font-size: 13px; color: #c9d1d9;'>Industry credentials validate your specialized expertise and show self-motivation. Plan to complete at least one certification soon.</span>
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("---")
+    st.markdown("<hr style='border-top: 1px solid rgba(48, 54, 61, 0.4); margin: 15px 0;'>", unsafe_allow_html=True)
     
     # Creating layout for charts and analysis
     col_plot1, col_plot2 = st.columns([1, 1])
@@ -319,7 +471,7 @@ with tab_individual:
             fill='toself',
             name='Current Student',
             line_color='#bc8cff',
-            fillcolor='rgba(188, 140, 255, 0.3)'
+            fillcolor='rgba(188, 140, 255, 0.25)'
         ))
         
         fig_radar.add_trace(go.Scatterpolar(
@@ -328,20 +480,39 @@ with tab_individual:
             fill='toself',
             name='Average Placed Student',
             line_color='#58a6ff',
-            fillcolor='rgba(56, 139, 253, 0.2)'
+            fillcolor='rgba(56, 139, 253, 0.15)'
         ))
         
+        # Updating layout of radar chart for premium styling
         fig_radar.update_layout(
             polar=dict(
-                radialaxis=dict(visible=True, range=[0, 10], color="#8b949e", gridcolor="#30363d"),
-                angularaxis=dict(color="#8b949e", gridcolor="#30363d"),
-                bgcolor="rgba(22, 27, 34, 0.5)"
+                radialaxis=dict(
+                    visible=True, 
+                    range=[0, 10], 
+                    color="#8b949e", 
+                    gridcolor="rgba(48, 54, 61, 0.4)",
+                    linecolor="rgba(48, 54, 61, 0.4)",
+                    tickfont=dict(family="Plus Jakarta Sans", size=10)
+                ),
+                angularaxis=dict(
+                    color="#c9d1d9", 
+                    gridcolor="rgba(48, 54, 61, 0.4)",
+                    tickfont=dict(family="Space Grotesk", size=12)
+                ),
+                bgcolor="rgba(15, 20, 35, 0.3)"
             ),
             showlegend=True,
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
-            legend=dict(font=dict(color="#c9d1d9")),
-            margin=dict(t=30, b=30, l=30, r=30)
+            legend=dict(
+                font=dict(family="Plus Jakarta Sans", color="#c9d1d9", size=11),
+                orientation="h",
+                yanchor="bottom",
+                y=-0.25,
+                xanchor="center",
+                x=0.5
+            ),
+            margin=dict(t=20, b=40, l=40, r=40)
         )
         
         st.plotly_chart(fig_radar, width="stretch")
@@ -350,51 +521,56 @@ with tab_individual:
         st.markdown("### ⏱️ Placement Probability Gauge")
         st.write("Visualizing prediction confidence and likelihood metric.")
         
+        # Defining dynamic color for the gauge bar depending on probability thresholds
+        gauge_bar_color = "#3fb950" if prediction_prob >= 0.75 else ("#db6d28" if prediction_prob >= 0.4 else "#ff7b72")
+        
         # Plotting the gauge chart using Plotly indicator
         fig_gauge = go.Figure(go.Indicator(
             mode="gauge+number",
             value=prediction_prob * 100,
             domain={'x': [0, 1], 'y': [0, 1]},
-            number={'suffix': "%", 'font': {'color': "#c9d1d9", 'size': 50}},
-            title={'text': "Likelihood of Placement", 'font': {'color': "#8b949e", 'size': 18}},
+            number={'suffix': "%", 'font': {'color': "#e6edf3", 'size': 50, 'family': "Space Grotesk"}},
+            title={'text': "Likelihood of Placement", 'font': {'color': "#8b949e", 'size': 16, 'family': "Plus Jakarta Sans"}},
             gauge={
                 'axis': {'range': [None, 100], 'tickwidth': 1, 'tickcolor': "#8b949e"},
-                'bar': {'color': "#58a6ff"},
-                'bgcolor': "rgba(22, 27, 34, 0.5)",
-                'borderwidth': 2,
-                'bordercolor': "#30363d",
+                'bar': {'color': gauge_bar_color},
+                'bgcolor': "rgba(15, 20, 35, 0.3)",
+                'borderwidth': 1.5,
+                'bordercolor': "rgba(48, 54, 61, 0.4)",
                 'steps': [
-                    {'range': [0, 40], 'color': 'rgba(248, 81, 73, 0.15)'},
-                    {'range': [40, 75], 'color': 'rgba(219, 109, 40, 0.15)'},
-                    {'range': [75, 100], 'color': 'rgba(46, 160, 67, 0.15)'}
+                    {'range': [0, 40], 'color': 'rgba(248, 81, 73, 0.08)'},
+                    {'range': [40, 75], 'color': 'rgba(219, 109, 40, 0.08)'},
+                    {'range': [75, 100], 'color': 'rgba(46, 160, 67, 0.08)'}
                 ],
                 'threshold': {
-                    'line': {'color': "#ff7b72", 'width': 4},
+                    'line': {'color': "#58a6ff", 'width': 4},
                     'thickness': 0.75,
                     'value': 50
                 }
             }
         ))
         
+        # Updating layout of gauge chart for premium styling
         fig_gauge.update_layout(
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
-            margin=dict(t=50, b=20, l=30, r=30),
-            height=320
+            margin=dict(t=50, b=10, l=30, r=30),
+            height=280
         )
         
         st.plotly_chart(fig_gauge, width="stretch")
 
 with tab_batch:
     # Creating header for the batch upload prediction portal
-    st.markdown("<h1 class='gradient-text'>Recruiter Portal & Batch Predictions</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 class='gradient-text' style='margin-bottom: 2px;'>Recruiter Portal & Batch Predictions</h1>", unsafe_allow_html=True)
     st.write("Upload a CSV file containing multiple student profiles to perform batch classifications and calculate employability scores instantly.")
+    st.markdown("<hr style='border-top: 1px solid rgba(48, 54, 61, 0.4); margin: 15px 0;'>", unsafe_allow_html=True)
     
-    st.markdown("---")
-    
-    # Providing a template download option for recruiters
-    st.markdown("### 📥 Download CSV Schema Template")
-    st.write("Ensure your upload CSV follows the schema below. Click to download the template:")
+    # Ingesting subcomponents into visual columns to clean template download area
+    col_temp1, col_temp2 = st.columns([2, 1])
+    with col_temp1:
+        st.markdown("### 📥 Download CSV Schema Template")
+        st.write("Ensure your upload CSV follows the schema. Download the official CSV template below:")
     
     template_data = pd.DataFrame([{
         "Age": 21,
@@ -414,18 +590,20 @@ with tab_batch:
     
     # Rendering template csv download button
     template_csv = template_data.to_csv(index=False)
-    st.download_button(
-        label="Download Sample CSV Template",
-        data=template_csv,
-        file_name="student_schema_template.csv",
-        mime="text/csv"
-    )
+    with col_temp2:
+        st.markdown("<div style='padding-top: 25px;'></div>", unsafe_allow_html=True)
+        st.download_button(
+            label="Download Template CSV",
+            data=template_csv,
+            file_name="student_schema_template.csv",
+            mime="text/csv"
+        )
     
     st.markdown("<br>", unsafe_allow_html=True)
     
     # Rendering file uploader to receive batch inputs
     st.markdown("### 📤 Upload Student Dataset")
-    uploaded_file = st.file_uploader("Select a student CSV file...", type=["csv"])
+    uploaded_file = st.file_uploader("Select a student CSV file to process...", type=["csv"])
     
     if uploaded_file is not None:
         try:
@@ -447,6 +625,11 @@ with tab_batch:
                 # Engineering feature columns for batch predictions
                 df_upload["Avg_Skill_Score"] = (df_upload["Coding_Skills"] + df_upload["Communication_Skills"] + df_upload["Soft_Skills_Rating"]) / 3.0
                 df_upload["Experience_Score"] = (df_upload["Internships"] * 2) + df_upload["Projects"] + df_upload["Certifications"]
+                
+                # Defining list of features to match training schema
+                features = ["Age", "Gender", "Degree", "Branch", "CGPA", "Internships", "Projects", 
+                            "Coding_Skills", "Communication_Skills", "Aptitude_Test_Score", 
+                            "Soft_Skills_Rating", "Certifications", "Backlogs", "Avg_Skill_Score", "Experience_Score"]
                 
                 # Executing batch model predictions
                 pred_features = df_upload[features]
@@ -484,10 +667,13 @@ with tab_batch:
                         color_discrete_map={"Placed": "#3fb950", "Not Placed": "#ff7b72"},
                         labels={"Predicted_Placement": "Placement Prediction"}
                     )
+                    # Styling the chart layout for premium dark-theme integration
                     fig_batch_bar.update_layout(
                         paper_bgcolor="rgba(0,0,0,0)",
                         plot_bgcolor="rgba(0,0,0,0)",
-                        font_color="#c9d1d9",
+                        font_color="#e6edf3",
+                        font_family="Plus Jakarta Sans",
+                        title_font_family="Space Grotesk",
                         showlegend=False
                     )
                     st.plotly_chart(fig_batch_bar, width="stretch")
@@ -502,10 +688,13 @@ with tab_batch:
                         title="Employability Score by Branch & Predicted Outcome",
                         color_discrete_map={"Placed": "#3fb950", "Not Placed": "#ff7b72"}
                     )
+                    # Styling the chart layout for premium dark-theme integration
                     fig_batch_box.update_layout(
                         paper_bgcolor="rgba(0,0,0,0)",
                         plot_bgcolor="rgba(0,0,0,0)",
-                        font_color="#c9d1d9"
+                        font_color="#e6edf3",
+                        font_family="Plus Jakarta Sans",
+                        title_font_family="Space Grotesk"
                     )
                     st.plotly_chart(fig_batch_box, width="stretch")
                 
